@@ -23,8 +23,7 @@ public class JwtTokenProvider {
     private Long jwtExpiration;
 
     public String generateToken(UserDetails userDetails) {
-        Claims claims = Jwts.claims().setSubject(userDetails.getUsername()).build();
-        claims.put("roles", userDetails.getAuthorities());
+        Claims claims = Jwts.claims().subject(userDetails.getUsername()).build();
         Date now = new Date();
         Date expiration = new Date(now.getTime() + jwtExpiration);
 

@@ -1,6 +1,8 @@
 package org.aoizora.service;
 
 import org.aoizora.dto.LoginRequest;
+import org.aoizora.entity.User;
+import org.aoizora.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,11 +16,15 @@ public class AuthenticationService {
 
     private AuthenticationManager authenticationManager;
     private JwtTokenProvider jwtTokenProvider;
+    private UserRepository userRepository;
 
     @Autowired
-    public AuthenticationService(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    public AuthenticationService(AuthenticationManager authenticationManager,
+                                 JwtTokenProvider jwtTokenProvider,
+                                 UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userRepository = userRepository;
     }
 
     public String login(LoginRequest request) {
@@ -26,6 +32,8 @@ public class AuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        return jwtTokenProvider.generateToken(userDetails);
+        User user = userRepository.findByEmail(((User) userDetails).getEmail()).orElseThrow(() -> new RuntimeException("User not found."));
+
+        return jwtTokenProvider.generateToken(user);
     }
 }

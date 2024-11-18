@@ -13,9 +13,4 @@ public class TaskController {
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("Hello!");
     }
-
-    @GetMapping("/login")
-    public ResponseEntity<String> login() {
-        return ResponseEntity.ok("Hello!");
-    }
 }

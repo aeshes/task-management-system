@@ -28,6 +28,9 @@ public class User implements UserDetails {
     }
 
     public User(String email, String password, List<GrantedAuthority> authorities) {
+        this.email = email;
+        this.password = password;
+        this.roles = authorities.stream().map(GrantedAuthority::getAuthority).toList();
     }
 
     public Long getId() {
