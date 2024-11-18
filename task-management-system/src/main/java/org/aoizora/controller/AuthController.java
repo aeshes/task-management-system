@@ -26,11 +26,19 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegistrationRequest request) {
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
         return ResponseEntity.ok().body(userService.registerUser(request));
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
-        return authenticationService.login(request);
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+        if (request.getPassword() == null || request.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().body(authenticationService.login(request));
     }
 }
