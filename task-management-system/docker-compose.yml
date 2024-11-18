@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  mysql-tms:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456'
+      MYSQL_DATABASE: 'tms'
+      MYSQL_USER: 'aoizora'
+      MYSQL_PASSWORD: '123456'
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
